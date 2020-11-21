@@ -11,7 +11,7 @@
 Visit the application on .
 
 ## Figma Link
-This is the [figma]() link to my design.
+This is the [figma](https://www.figma.com/file/D6GWnb1vzjQ7wRuVL4k2of/instagram?node-id=5%3A3) link to my design.
 
 ## Development
 To make advancements/modifications, follow these steps:
