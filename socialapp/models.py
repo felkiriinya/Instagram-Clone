@@ -38,8 +38,32 @@ class Image(models.Model):
     image_likes = models.PositiveIntegerField(default=0,blank=True)
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    @classmethod
+    def get_images(cls):
+        all_images = cls.objects.all()
+        return all_images 
+    
+    @classmethod
+    def search_by_caption(cls,search_term):
+        post = cls.objects.filter(caption__icontains=search_term)
+        return post
+
+    @classmethod
+    def filter_images_by_user(cls,id):
+        images_by_user = cls.objects.filter(profile = id).all() 
+        return images_by_user    
+    
+    def __str__(self):
+        return self.image_name
+
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ForeignKey('Image',on_delete=models.CASCADE)
     content = HTMLField()
-    date_posted = models.DateTimeField(auto_now_add=True)       
+    date_posted = models.DateTimeField(auto_now_add=True)  
+
+    @classmethod
+    def get_comments(cls,id):
+        comments = cls.objects.filter(image_id=id)
+        return comments     
+     
