@@ -8,10 +8,11 @@ from .forms import NewPostForm,NewProfileForm,UpdateUserProfileForm,UpdateUserFo
 @login_required(login_url='/accounts/login/')
 def landing(request):
     posts = Image.get_images()
+    users = User.objects.exclude(id=request.user.id)
     current_user = request.user
 
     suggestions = Profile.objects.all()
-    return render(request,"instagram-page/landing.html",{'posts':posts,'user':current_user,'suggestions':suggestions})
+    return render(request,"instagram-page/landing.html",{'posts':posts,'user':current_user,'suggestions':suggestions,'users':users})
 
 def new_post(request):
     current_user = request.user
@@ -59,8 +60,8 @@ def profile(request, username):
             prof_form.save()
             return HttpResponseRedirect(request.path_info)
     else:
-        user_form = UpdateUserForm
-        prof_form = UpdateUserProfileForm
+        user_form = UpdateUserForm()
+        prof_form = UpdateUserProfileForm()
     params = {
         'user_form': user_form,
         'prof_form': prof_form,
@@ -68,6 +69,7 @@ def profile(request, username):
 
     }
     return render(request, 'profile.html', params)
+
 @login_required(login_url='/accounts/login')
 def user_profile(request, username):
     user_prof = get_object_or_404(User, username=username)
