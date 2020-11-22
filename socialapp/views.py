@@ -4,4 +4,4 @@ from django.http  import HttpResponse,Http404
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def landing(request):
-    pass
+    return render(request,"instagram-page/landing.html")
