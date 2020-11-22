@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-3">
-                        <img class="rounded-circle account-img" src="{{ user.profile_picture.url }}">
+                        <img class="rounded-circle account-img" src="{{ user.profile_photo.url }}">
                     </div>
                     <div class="col-md-6 mt-3">
                         <div class="media-body">
@@ -20,11 +20,11 @@
 
                             <div class="post-details mt-3 mb-3">
                                 <span class="mr-5"><strong>{{images.count}}</strong> Posts</span>
-                                <span class="mr-5"> <strong>{{ user.profile.followers.count }}</strong> followers</span>
-                                <span class="mr-5"> <strong>{{ user.profile.following.count }}</strong> following</span>
+                                <span class="mr-5"> <strong>0</strong> followers</span>
+                                <span class="mr-5"> <strong>0</strong> following</span>
                             </div>
                             <h5>{{ user.name }}</h5>
-                            <p class="text-secondary">{{ user.bio }}</p>
+                            <p class="text-secondary">{{ user.profile.bio }}</p>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,7 @@
                 <div class="modal-content">
                     <form action="" method="post" novalidate enctype="multipart/form-data" class="mr-4 mt-4 ml-4 mb-4">
                         {% csrf_token%}
-                        {{ user_form|crispy}}
+                       
                         {{ prof_form|crispy}}
                         <button type="submit" class="btn btn-primary btn-sm"> Update Profile</button>
                     </form>
@@ -59,7 +59,7 @@
     </div>
     <hr class="mt-4">
     <div class="card-columns">
-        {% for image in images %}
+        <!-- {% for image in images %}
             <div class="card">
                 <div class="card-body">
                     <img src="{{image.image.url}}" alt="{{image.caption}}" class="card-img">
@@ -70,7 +70,7 @@
                     
                 </div>
             </div>
-        {% endfor %}
+        {% endfor %} -->
     </div>
 </div>
 

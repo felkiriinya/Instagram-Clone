@@ -1,0 +1,18 @@
+                   List of relations
+ Schema |            Name            | Type  |  Owner  
+--------+----------------------------+-------+---------
+ public | auth_group                 | table | felista
+ public | auth_group_permissions     | table | felista
+ public | auth_permission            | table | felista
+ public | auth_user                  | table | felista
+ public | auth_user_groups           | table | felista
+ public | auth_user_user_permissions | table | felista
+ public | django_admin_log           | table | felista
+ public | django_content_type        | table | felista
+ public | django_migrations          | table | felista
+ public | django_session             | table | felista
+ public | socialapp_comment          | table | felista
+ public | socialapp_image            | table | felista
+ public | socialapp_profile          | table | felista
+(13 rows)
+

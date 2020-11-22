@@ -10,18 +10,30 @@ import cloudinary
 # Create your models here.
 
 class Profile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE, related_name='profile')
+    user = models.OneToOneField(User,related_name='profile',on_delete=models.CASCADE)
     profile_photo = CloudinaryField('image')
     bio = HTMLField(blank=True,default='I am a new user!')
-
+    name = models.CharField(blank=True, max_length=120)
+    
     def __str__(self):
-        return self.bio
+        return f'{self.user.username} profile'
 
+    @classmethod
+    def get_profiles(cls):
+        profiles = cls.objects.all()
+        return profiles
 
-    def __str__(self):
-        return f'{self.user.username} Profile'
+    def save(self, **kwargs):
+        super().save()
 
-        
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
     def save_profile(self):
         self.save() 
@@ -45,6 +57,7 @@ class Image(models.Model):
     date_posted = models.DateTimeField(auto_now_add=True)
     image_likes = models.PositiveIntegerField(default=0,blank=True)
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
+    
 
     @classmethod
     def get_images(cls):
