@@ -21,3 +21,16 @@ class ImageTest(TestCase):
     def tearDown(self):
         self.test_user.delete() 
         Image.objects.all().delete()   
+
+class ProfileTest(TestCase):
+    def setUp(self):
+        ''' method called before each test case'''
+        self.user = User.objects.create_user(username='Felista')
+
+    def tearDown(self):
+        self.user.delete()
+
+    def test_profile_creation(self):
+        self.assertIsInstance(self.user.profile, Profile)
+        self.user.save()
+        self.assertIsInstance(self.user.profile, Profile)        
