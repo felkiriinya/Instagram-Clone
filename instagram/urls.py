@@ -21,5 +21,5 @@ urlpatterns = [
     url('admin/', admin.site.urls),
     url('',include('socialapp.urls')),
     url(r'^accounts/', include('registration.backends.simple.urls')),
-    url(r'^logout/$',views.LogoutView.as_view(), {'next_page': '/'})
+    url(r'^logout/$',views.LogoutView.as_view(), {'next_page': 'settings.LOGOUT_REDIRECT_URL'})
 ]
