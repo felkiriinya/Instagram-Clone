@@ -11,6 +11,24 @@ class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
     profile_photo = CloudinaryField('image')
     bio = HTMLField(blank=True,default='I am a new user!')
+
+    def __str__(self):
+        return self.bio
+
+    def save_profile(self):
+        self.save() 
+
+    def delete_profile(self):
+        self.delete()
+
+    def update_bio(self,new_bio):
+        self.bio = new_bio
+        self.save()
+
+    def update_image(self, user_id, new_image):
+        user = User.objects.get(id = user_id)
+        self.photo = new_image 
+        self.save()              
     
 class Image(models.Model):
     image = CloudinaryField('image')
