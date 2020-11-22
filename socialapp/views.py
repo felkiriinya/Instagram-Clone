@@ -2,11 +2,14 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render,redirect
 from django.http  import HttpResponse,Http404
 from django.contrib.auth.models import User
+from .models import Image,Profile,Comment
 from .forms import NewPostForm
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def landing(request):
-    return render(request,"instagram-page/landing.html")
+    posts = Image.get_images()
+    current_user = request.user
+    return render(request,"instagram-page/landing.html",{'posts':posts,'user':current_user})
 
 def new_post(request):
     current_user = request.user
@@ -14,7 +17,7 @@ def new_post(request):
         form = NewPostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
-            post.author = current_user
+            post.posted_by = current_user
             post.save()
         return redirect('landing')
 

@@ -1,5 +1,33 @@
 {%extends "instagram-page/base.html"%}
 {% load bootstrap3 %}
 {%block content%}
-
+<div class="container">
+    <div class="row">
+        <!-- Empty div -->
+       
+        <div class="col-md-5 panel-form" >
+            {% for post in posts %}
+          <div class="panel panel-default">
+    
+            <div class="panel-heading">
+              <h3> {{ post.posted_by.username }}</h3>
+            </div>
+            <div class="panel-body" style="width: 100%;">
+                <img src="{{post.image.url}}" alt=""  style=" width: 100%;">
+               <p>
+                {{ post.image_caption| safe }}
+               </p> 
+                <p class="muted"> {{ post.date_posted|timesince }} ago</p>
+               <a href="">Add Comment</a>
+    
+    
+            </div>
+    
+          </div>
+          {% endfor %}
+        </div>
+        <!-- empty div -->
+        <div class="col-md-7"></div>
+      </div>
+  </div>
 {%endblock%}
