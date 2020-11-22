@@ -3,17 +3,24 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from tinymce.models import HTMLField
 from cloudinary.models import CloudinaryField
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 import cloudinary
 # Create your models here.
 
 class Profile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE, related_name='profile')
     profile_photo = CloudinaryField('image')
     bio = HTMLField(blank=True,default='I am a new user!')
 
     def __str__(self):
         return self.bio
+
+
+    def __str__(self):
+        return f'{self.user.username} Profile'
+
 
     def save_profile(self):
         self.save() 
