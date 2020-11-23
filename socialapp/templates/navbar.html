@@ -41,10 +41,10 @@
           </div>
           {% endif %}
           <div class="navbar-collapse collapse " style="float: right;" >
-            <form class="navbar-form" role="search" action="">
+            <form class="navbar-form" role="search" action="{% url 'search' %}">
 
               <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search..." name="post">
+                <input type="text" class="form-control" placeholder="Search..." name="search_user">
                 <div class="input-group-btn">
                   <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
                 </div>

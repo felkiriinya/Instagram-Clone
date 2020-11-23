@@ -20,10 +20,6 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} profile'
 
-    # @classmethod
-    # def get_profiles(cls):
-    #     profiles = cls.objects.all()
-    #     return profiles
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -37,6 +33,10 @@ class Profile(models.Model):
             instance.profile.save()
         except ObjectDoesNotExist:
             Profile.objects.create(user=instance)
+   
+    @classmethod
+    def search_profile(cls, name):
+        return cls.objects.filter(user__username__icontains=name).all()
 
 
     def save_profile(self):
@@ -82,7 +82,7 @@ class Image(models.Model):
         return images_by_user    
     
    
-
+    
 
 class Comment(models.Model):
     user = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='comments')

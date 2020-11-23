@@ -58,10 +58,10 @@ def profile(request,profile_id):
         user_form = UpdateUserForm(instance=request.user)
         prof_form = UpdateUserProfileForm(instance=request.user.profile)
     params = {
+        'images' : images,   
         'user_form': user_form,
         'prof_form': prof_form,
-        'images': images,   
-
+        
     }
     return render(request, 'profile.html', params)
 
@@ -86,17 +86,7 @@ def user_profile(request, username):
     }
     return render(request, 'user_profile.html', params)       
 
-# def new_comment(request, post_id):
-#     if 'comment' in request.GET and request.GET["comment"]:
-#         com = request.GET.get('comment')
-#         new_com = Comment(comment = com)
-#         new_com.save()
-#         post = Image.objects.get(id = post_id)
-#         post.comments.add(new_com)
-#         post.save()
-#         print("justice                  \n\n", com) #working
-#         return redirect('allprofiles')
-#     return redirect('allprofiles')    
+ 
 
 @login_required(login_url='/accounts/login')
 def post_comment(request, id):
@@ -120,4 +110,19 @@ def post_comment(request, id):
         'is_liked': is_liked,
         # 'total_likes': image.total_likes()
     }
-    return render(request, 'post.html', params)    
+    return render(request, 'post.html', params) 
+
+@login_required(login_url='/accounts/login')
+def search_profile(request):
+    if 'search_user' in request.GET and request.GET['search_user']:
+        name = request.GET.get("search_user")
+        results = Profile.search_profile(name)
+        message = f'name'
+        params = {
+            'results': results,
+            'message': message
+        }
+        return render(request, 'results.html', params)
+    else:
+        message = "You haven't searched for any image category"
+    return render(request, 'results.html', {'message': message})
