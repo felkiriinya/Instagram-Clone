@@ -5,12 +5,14 @@ from tinymce.models import HTMLField
 from cloudinary.models import CloudinaryField
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.exceptions import ObjectDoesNotExist
+
 
 import cloudinary
 # Create your models here.
 
 class Profile(models.Model):
-    user = models.OneToOneField(User,on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
     profile_photo = CloudinaryField('image')
     bio = HTMLField(blank=True,default='I am a new user!')
     name = models.CharField(blank=True, max_length=120)
@@ -23,14 +25,19 @@ class Profile(models.Model):
     #     profiles = cls.objects.all()
     #     return profiles
 
-    # @receiver(post_save, sender=User)
-    # def create_user_profile(sender, instance, created, **kwargs):
-    #     if created:
-    #         Profile.objects.create(user=instance)
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+           
 
-    # @receiver(post_save, sender=User)
-    # def save_user_profile(sender, instance, **kwargs):
-    #     instance.profile.save()
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        try:
+            instance.profile.save()
+        except ObjectDoesNotExist:
+            Profile.objects.create(user=instance)
+
 
     def save_profile(self):
         self.save() 
@@ -54,7 +61,7 @@ class Image(models.Model):
     date_posted = models.DateTimeField(auto_now_add=True)
     image_likes = models.PositiveIntegerField(default=0,blank=True)
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='posts')
 
     @classmethod
     def get_images(cls):
@@ -66,13 +73,17 @@ class Image(models.Model):
         post = cls.objects.filter(caption__icontains=search_term)
         return post
 
+    def get_absolute_url(self):
+        return f"/post/{self.id}"
+
     @classmethod
     def filter_images_by_user(cls,id):
         images_by_user = cls.objects.filter(profile = id).all() 
         return images_by_user    
     
     def __str__(self):
-        return self.image_name
+       return f'{self.user.name} Post'
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

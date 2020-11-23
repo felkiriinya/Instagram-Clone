@@ -33,11 +33,11 @@
             {% for user in users%}
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <img class="rounded-circle" src="{{ user.profile_photo.url }}"
+                    <img class="rounded-circle" src="{{ user.profile.profile_photo.url }}"
                      width="45px" height="45px">
             
            
-                <span><a href="">{{user.username}}</a></span>
+                <span><a href="{% url 'user_profile' user.username  %}">{{user.username}}</a></span>
                 </div>
 
             </div>
