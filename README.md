@@ -8,7 +8,7 @@
 ![landing](./static/landing.png)
 
 ## Live link
-Visit the application on .
+Visit the application on https://felinstagram.herokuapp.com/.
 
 ## Figma Link
 This is the [figma](https://www.figma.com/file/D6GWnb1vzjQ7wRuVL4k2of/instagram?node-id=5%3A3) link to my design.
