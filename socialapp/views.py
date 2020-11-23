@@ -16,12 +16,12 @@ def landing(request):
     return render(request,"instagram-page/landing.html",{'posts':posts,'user':current_user,'suggestions':suggestions,'users':users})
 @login_required(login_url='/accounts/login/')
 def new_post(request):
-    current_user = request.user
+    current_user = request.user.profile
     if request.method == 'POST':
         form = NewPostForm(request.POST, request.FILES)
         if form.is_valid():
             post = form.save(commit=False)
-            post.posted_by = current_user
+            post.user = request.user.profile
             post.save()
         return redirect('landing')
 
