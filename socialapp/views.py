@@ -13,7 +13,7 @@ def landing(request):
 
     suggestions = Profile.objects.all()
     return render(request,"instagram-page/landing.html",{'posts':posts,'user':current_user,'suggestions':suggestions,'users':users})
-
+@login_required(login_url='/accounts/login/')
 def new_post(request):
     current_user = request.user
     if request.method == 'POST':
@@ -36,7 +36,7 @@ def new_profile(request):
             post = form.save(commit=False)
             post.user = current_user
             post.save()
-        return redirect('landing')
+        return redirect('profile')
 
     else:
         form = NewProfileForm()
@@ -51,26 +51,47 @@ def new_profile(request):
 # 
 @login_required(login_url='/accounts/login')
 def profile(request,profile_id):
-    profile = Profile.objects.filter(id=profile_id)
-    # images = request.user.profile.images.all()
-    current_user = request.user
-    if request.method == "POST":
-        user_form = UpdateUserForm(request.POST )
-        prof_form = UpdateUserProfileForm(request.POST, request.FILES)
-        if user_form.is_valid() and prof_form.is_valid():
-            user_form.save()
-            prof_form.save()
-            bio = user.bio
-            return HttpResponseRedirect(request.path_info)
-    else:
-        user_form = UpdateUserForm()
-        prof_form = UpdateUserProfileForm()
-    params = {
-        'user_form': user_form,
-        'prof_form': prof_form,
-        # 'images': images, 
-        'profile':profile  
+    # profile = Profile.objects.filter(id=profile_id)
+    # # images = request.user.profile.images.all()
+    # current_user = request.user
+    # if request.method == "POST":
+    #     user_form = UpdateUserForm(request.POST )
+    #     prof_form = UpdateUserProfileForm(request.POST, request.FILES)
+    #     if user_form.is_valid() and prof_form.is_valid():
+    #         user_form.save()
+    #         prof_form.save()
+    #         bio = user.bio
+    #         return HttpResponseRedirect(request.path_info)
+    # else:
+    #     user_form = UpdateUserForm()
+    #     prof_form = UpdateUserProfileForm()
+    # params = {
+    #     'user_form': user_form,
+    #     'prof_form': prof_form,
+    #     # 'images': images, 
+    #     'profile':profile  
 
+    # }
+    current_user = request.user
+    photos = Image.objects.filter(posted_by=current_user).all()
+    # profile = Profile.objects.get(user__id=current_user.id)
+    if request.method == 'POST':
+        form = NewProfileForm(request.POST, request.FILES)
+        prof_form = UpdateUserProfileForm(request.POST, request.FILES)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = current_user
+            post.save()
+            prof_form.save()
+            
+        return redirect('profile')
+
+    else:
+        form = NewProfileForm()
+    params = {
+        'photos':photos,
+        # 'profile':profile,
+        'form':form
     }
     return render(request, 'profile.html', params)
 
@@ -94,3 +115,15 @@ def user_profile(request, username):
         'people_following':people_following
     }
     return render(request, 'user_profile.html', params)       
+
+def new_comment(request, post_id):
+    if 'comment' in request.GET and request.GET["comment"]:
+        com = request.GET.get('comment')
+        new_com = Comment(comment = com)
+        new_com.save()
+        post = Image.objects.get(id = post_id)
+        post.comments.add(new_com)
+        post.save()
+        print("justice                  \n\n", com) #working
+        return redirect('allprofiles')
+    return redirect('allprofiles')    

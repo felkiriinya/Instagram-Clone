@@ -10,7 +10,7 @@ import cloudinary
 # Create your models here.
 
 class Profile(models.Model):
-    user = models.OneToOneField(User,related_name='profile',on_delete=models.CASCADE)
+    user = models.OneToOneField(User,on_delete=models.CASCADE)
     profile_photo = CloudinaryField('image')
     bio = HTMLField(blank=True,default='I am a new user!')
     name = models.CharField(blank=True, max_length=120)
@@ -18,22 +18,19 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} profile'
 
-    @classmethod
-    def get_profiles(cls):
-        profiles = cls.objects.all()
-        return profiles
+    # @classmethod
+    # def get_profiles(cls):
+    #     profiles = cls.objects.all()
+    #     return profiles
 
-    def save(self, **kwargs):
-        super().save()
+    # @receiver(post_save, sender=User)
+    # def create_user_profile(sender, instance, created, **kwargs):
+    #     if created:
+    #         Profile.objects.create(user=instance)
 
-    @receiver(post_save, sender=User)
-    def create_user_profile(sender, instance, created, **kwargs):
-        if created:
-            Profile.objects.create(user=instance)
-
-    @receiver(post_save, sender=User)
-    def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
+    # @receiver(post_save, sender=User)
+    # def save_user_profile(sender, instance, **kwargs):
+    #     instance.profile.save()
 
     def save_profile(self):
         self.save() 

@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-md-1"></div>
                     <div class="col-md-3">
-                        <img class="rounded-circle account-img" src="{{ user.profile_photo.url }}">
+                        <img class="rounded-circle account-img" src="{{ profile.profile_photo.url }}">
                     </div>
                     <div class="col-md-6 mt-3">
                         <div class="media-body">
@@ -19,12 +19,12 @@
                             </div>
 
                             <div class="post-details mt-3 mb-3">
-                                <span class="mr-5"><strong>{{images.count}}</strong> Posts</span>
+                                <span class="mr-5"><strong>{{photos.count}}</strong> Posts</span>
                                 <span class="mr-5"> <strong>0</strong> followers</span>
                                 <span class="mr-5"> <strong>0</strong> following</span>
                             </div>
-                            <h5>{{ user.name }}</h5>
-                            <p class="text-secondary">{{ user.profile.bio }}</p>
+                            <h5>{{ profile.name }}</h5>
+                            <p class="text-secondary">{{user.bio }}</p>
                         </div>
                     </div>
                 </div>
@@ -50,7 +50,7 @@
                     <form action="" method="post" novalidate enctype="multipart/form-data" class="mr-4 mt-4 ml-4 mb-4">
                         {% csrf_token%}
                        
-                        {{ prof_form|crispy}}
+                        {{form|crispy}}
                         <button type="submit" class="btn btn-primary btn-sm"> Update Profile</button>
                     </form>
                 </div>
