@@ -4,8 +4,11 @@
 #### By Felista Kiriinya
 
 ## Description
+Instagram-Clone allows you to post pictures and also view your profile with your pictures and edit it.
 
-![landing](./static/landing.png)
+![login](./static/images/login.png)
+![landing](./static/images/landing.png)
+
 
 ## Live link
 Visit the application on https://felinstagram.herokuapp.com/.
