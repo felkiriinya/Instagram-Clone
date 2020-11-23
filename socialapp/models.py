@@ -81,8 +81,8 @@ class Image(models.Model):
         images_by_user = cls.objects.filter(profile = id).all() 
         return images_by_user    
     
-    # def __str__(self):
-    #    return f'{self.user.username} Image'
+    def __str__(self):
+       return f'{self.user.name} Image'
 
 
 class Comment(models.Model):
