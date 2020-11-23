@@ -4,7 +4,7 @@
 #### By Felista Kiriinya
 
 ## Description
-Instagram-Clone allows you to post pictures and also view your profile with your pictures and edit it.
+Instagram-Clone allows you to post pictures and comment on them, you can also view your profile with your pictures and edit it.
 
 ![login](./static/images/login.png)
 ![landing](./static/images/landing.png)
