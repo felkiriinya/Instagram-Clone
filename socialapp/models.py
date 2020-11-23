@@ -61,7 +61,7 @@ class Image(models.Model):
     date_posted = models.DateTimeField(auto_now_add=True)
     image_likes = models.PositiveIntegerField(default=0,blank=True)
     posted_by = models.ForeignKey(User, on_delete=models.CASCADE)
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='posts')
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='posts',null=True)
 
     @classmethod
     def get_images(cls):
@@ -81,8 +81,8 @@ class Image(models.Model):
         images_by_user = cls.objects.filter(profile = id).all() 
         return images_by_user    
     
-    def __str__(self):
-       return f'{self.user.name} Post'
+    # def __str__(self):
+    #    return f'{self.user.username} Image'
 
 
 class Comment(models.Model):

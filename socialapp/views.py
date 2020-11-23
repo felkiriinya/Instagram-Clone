@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,get_object_or_404
 from django.http  import HttpResponse,Http404
 from django.contrib.auth.models import User
 from .models import Image,Profile,Comment
@@ -8,7 +8,7 @@ from .forms import NewPostForm,NewProfileForm,UpdateUserProfileForm,UpdateUserFo
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def landing(request):
-    posts = Image.get_images()
+    posts = Image.get_images().order_by('-date_posted')
     users = User.objects.exclude(id=request.user.id)
     current_user = request.user
 
@@ -72,17 +72,17 @@ def user_profile(request, username):
         return redirect('profile', username=request.user.username)
     user_posts = user_prof.profile.posts.all()
     users = User.objects.get(username=username)
-    followers = len(Follow.objects.followers(users))
-    following = len(Follow.objects.following(users))
-    people_following = Follow.objects.following(request.user)
+    # followers = len(Follow.objects.followers(users))
+    # following = len(Follow.objects.following(users))
+    # people_following = Follow.objects.following(request.user)
     id = request.user.id
     follow_status = None
     params = {
         'user_prof': user_prof,
         'user_posts': user_posts,
-        'followers': followers,
-        'follow_status': follow_status,
-        'people_following':people_following
+        # 'followers': followers,
+        # 'follow_status': follow_status,
+        # 'people_following':people_following
     }
     return render(request, 'user_profile.html', params)       
 

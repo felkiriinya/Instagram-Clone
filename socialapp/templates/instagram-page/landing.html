@@ -10,8 +10,11 @@
           <div class="panel panel-default" >
     
             <div class="panel-heading" style="margin: 0%; padding-bottom: 0;">
+              <div class="profile-pic">
                 
-              <h4 > {{ post.posted_by.username| capfirst }}</h4>
+
+              </div>
+              <h4> {{ post.posted_by.username| capfirst }}</h4>
             </div>
             <div class="panel-body" style="width: 100%;">
                 <img src="{{post.image.url}}" alt=""  style=" width: 100%;">
@@ -37,7 +40,7 @@
                      width="45px" height="45px">
             
            
-                <span><a href="{% url 'user_profile' user.username  %}">{{user.username}}</a></span>
+                <span><a href="">{{user.username}}</a></span>
                 </div>
 
             </div>
