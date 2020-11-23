@@ -4,7 +4,7 @@ from django.http  import HttpResponse,Http404
 from django.contrib.auth.models import User
 from .models import Image,Profile,Comment
 from django.http import HttpResponseRedirect, JsonResponse
-from .forms import NewPostForm,NewProfileForm,UpdateUserProfileForm,UpdateUserForm
+from .forms import NewPostForm,NewProfileForm,UpdateUserProfileForm,UpdateUserForm,CommentForm
 # Create your views here.
 @login_required(login_url='/accounts/login/')
 def landing(request):
@@ -86,14 +86,38 @@ def user_profile(request, username):
     }
     return render(request, 'user_profile.html', params)       
 
-def new_comment(request, post_id):
-    if 'comment' in request.GET and request.GET["comment"]:
-        com = request.GET.get('comment')
-        new_com = Comment(comment = com)
-        new_com.save()
-        post = Image.objects.get(id = post_id)
-        post.comments.add(new_com)
-        post.save()
-        print("justice                  \n\n", com) #working
-        return redirect('allprofiles')
-    return redirect('allprofiles')    
+# def new_comment(request, post_id):
+#     if 'comment' in request.GET and request.GET["comment"]:
+#         com = request.GET.get('comment')
+#         new_com = Comment(comment = com)
+#         new_com.save()
+#         post = Image.objects.get(id = post_id)
+#         post.comments.add(new_com)
+#         post.save()
+#         print("justice                  \n\n", com) #working
+#         return redirect('allprofiles')
+#     return redirect('allprofiles')    
+
+@login_required(login_url='/accounts/login')
+def post_comment(request, id):
+    image = get_object_or_404(Image, pk=id)
+    is_liked = False
+    # if image.likes.filter(id=request.user.id).exists():
+    #     is_liked = True
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            savecomment = form.save(commit=False)
+            savecomment.post = image
+            savecomment.user = request.user.profile
+            savecomment.save()
+            return HttpResponseRedirect(request.path_info)
+    else:
+        form = CommentForm()
+    params = {
+        'image': image,
+        'form': form,
+        'is_liked': is_liked,
+        # 'total_likes': image.total_likes()
+    }
+    return render(request, 'post.html', params)    

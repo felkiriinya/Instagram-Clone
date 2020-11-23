@@ -81,13 +81,12 @@ class Image(models.Model):
         images_by_user = cls.objects.filter(profile = id).all() 
         return images_by_user    
     
-    def __str__(self):
-       return f'{self.user.name} Image'
+   
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ForeignKey('Image',on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE,related_name='comments')
+    post = models.ForeignKey(Image,on_delete=models.CASCADE,related_name='comments')
     content = HTMLField()
     date_posted = models.DateTimeField(auto_now_add=True)  
 

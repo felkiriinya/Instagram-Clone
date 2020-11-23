@@ -1,0 +1,39 @@
+{% extends 'instagram-page/base.html' %}
+{% load static %}
+{% load bootstrap3 %}
+{% block content %}
+<div class="container" style="margin-top:7%;">
+    <div class="card">
+        <div class="row">
+            <div class="col-md-5">
+                {% for comment in image.comments.all %}
+                <div class="comment">
+                    <div><strong>{{ comment.user.user.username }}</strong> <span class="text-secondary">{{ comment.content }}</span>
+                    </div>
+                </div>
+                {% empty %}
+                <p class="ml-3">No comments here yet</p>
+                {% endfor %}
+                
+               
+                <form class="form" action="" method="post" novalidate>
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-10">
+                            {% bootstrap_form form %}
+                        </div>
+                        <div class="col-md-2 mt-4" >
+                            <button type="submit" class="btn btn-sm btn-outline-primary" style="margin-top:14px; margin-left:-10px">post</button>
+                        </div>
+                    </div>
+
+
+                </form>
+            </div>
+            <div class="col-md-1"></div>
+            </div>
+                
+        </div>
+    </div>
+</div>
+{% endblock %}
